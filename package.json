@@ -1,0 +1,37 @@
+{
+  "name": "@lockally/nestjs",
+  "version": "0.1.0",
+  "description": "Official Lockally module for NestJS — send transactional email via Lockally with an injectable LockallyService.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "repository": { "type": "git", "url": "https://github.com/LockallyInc/lockally-nestjs.git" },
+  "homepage": "https://lockally.com",
+  "keywords": ["lockally", "nestjs", "email", "mailer", "transactional", "module"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "test": "node --test",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "lockally": "^0.1.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": ">=9",
+    "reflect-metadata": ">=0.1.13",
+    "rxjs": ">=7"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "@types/node": "^20.0.0",
+    "@nestjs/common": "^10.0.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  }
+}
