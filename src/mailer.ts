@@ -1,7 +1,7 @@
 // Core Email -> POST /v1/send mapping, shared by the middleware. Depends on the
 // `lockally` client only for TYPES (erased at runtime), and takes an injectable
 // SendApi so this module is unit-testable without the published package.
-import type { V1SendPostRequest, V1SendPostRequestAttachmentsInner } from "lockally";
+import type { SendEmailRequest, SendEmailRequestAttachmentsInner } from "lockally";
 import { randomUUID } from "node:crypto";
 
 export interface LockallyOptions {
@@ -33,9 +33,9 @@ export interface SendEmailOptions {
 
 /** The slice of the generated `SendApi` the mailer uses (injectable for tests). */
 export interface SendApiLike {
-  v1SendPost(requestParameters: {
+  sendEmail(requestParameters: {
     idempotencyKey: string;
-    v1SendPostRequest: V1SendPostRequest;
+    sendEmailRequest: SendEmailRequest;
   }): Promise<unknown>;
 }
 
@@ -48,22 +48,22 @@ export class LockallyMailer {
 
   /** Send one message. Resolves with the API's 202 response. */
   send(options: SendEmailOptions): Promise<unknown> {
-    return this.api.v1SendPost({
+    return this.api.sendEmail({
       // One idempotency key per logical send (required header, 24 h dedupe window).
       idempotencyKey: "lk-" + randomUUID().replace(/-/g, ""),
-      v1SendPostRequest: buildRequest(options),
+      sendEmailRequest: buildRequest(options),
     });
   }
 }
 
 /** Map send options onto the /v1/send request body. Exported for unit testing. */
-export function buildRequest(o: SendEmailOptions): V1SendPostRequest {
+export function buildRequest(o: SendEmailOptions): SendEmailRequest {
   const headers: Record<string, string> = { ...(o.headers ?? {}) };
   if (o.replyTo) {
     headers["Reply-To"] = asList(o.replyTo).join(", ");
   }
 
-  const req: V1SendPostRequest = {
+  const req: SendEmailRequest = {
     from: o.from,
     to: asList(o.to),
   };
@@ -75,7 +75,7 @@ export function buildRequest(o: SendEmailOptions): V1SendPostRequest {
   if (Object.keys(headers).length > 0) req.headers = headers;
   if (o.attachments && o.attachments.length > 0) {
     req.attachments = o.attachments.map(
-      (a): V1SendPostRequestAttachmentsInner => ({
+      (a): SendEmailRequestAttachmentsInner => ({
         filename: a.filename,
         contentType: a.contentType ?? "application/octet-stream",
         contentBase64: toBase64(a.content),

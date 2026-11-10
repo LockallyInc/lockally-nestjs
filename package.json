@@ -1,6 +1,6 @@
 {
   "name": "@lockally/nestjs",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Official Lockally module for NestJS — send transactional email via Lockally with an injectable LockallyService.",
   "license": "MIT",
   "type": "module",
@@ -20,7 +20,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "lockally": "^0.1.0"
+    "lockally": "^0.3.0"
   },
   "peerDependencies": {
     "@nestjs/common": ">=9",

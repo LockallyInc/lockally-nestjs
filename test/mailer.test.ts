@@ -36,9 +36,9 @@ test("single string recipient becomes a one-element array", () => {
 });
 
 test("mailer.send posts with an idempotency key", async () => {
-  const calls: Array<{ idempotencyKey: string; v1SendPostRequest: unknown }> = [];
+  const calls: Array<{ idempotencyKey: string; sendEmailRequest: unknown }> = [];
   const fake: SendApiLike = {
-    async v1SendPost(params) {
+    async sendEmail(params) {
       calls.push(params);
       return { id: "m_1", status: "queued" };
     },
@@ -49,5 +49,5 @@ test("mailer.send posts with an idempotency key", async () => {
 
   assert.equal(calls.length, 1);
   assert.match(calls[0].idempotencyKey, /^lk-/);
-  assert.equal((calls[0].v1SendPostRequest as { from: string }).from, "a@acme.com");
+  assert.equal((calls[0].sendEmailRequest as { from: string }).from, "a@acme.com");
 });
