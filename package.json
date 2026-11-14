@@ -1,7 +1,7 @@
 {
   "name": "@lockally/nestjs",
   "version": "0.2.0",
-  "description": "Official Lockally module for NestJS — send transactional email via Lockally with an injectable LockallyService.",
+  "description": "Official Lockally module for NestJS: send transactional email through Lockally with an injectable LockallyService.",
   "license": "MIT",
   "type": "module",
   "sideEffects": false,
